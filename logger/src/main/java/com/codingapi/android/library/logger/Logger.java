@@ -17,6 +17,9 @@ public class Logger {
     private static final Locale LOCALE = Locale.getDefault();
     private final static SimpleDateFormat sDateFormat = new SimpleDateFormat(PREFIX_DATE, LOCALE);
 
+    private Logger() {
+    }
+
     public static void setWriteLog(boolean isWriteLog) {
         Logger.isWriteLog = isWriteLog;
     }
