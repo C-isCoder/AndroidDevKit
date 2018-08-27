@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+apply plugin: "maven"
+apply from: '../maven-config.gradle'
+apply from: '../depend-config.gradle'
+
+android {
+  compileSdkVersion android.compileVersion
+
+  defaultConfig {
+    minSdkVersion android.minVersion
+    targetSdkVersion android.targetVersion
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+
+uploadArchives {
+  configuration = configurations.archives
+  repositories {
+    mavenDeployer {
+      snapshotRepository(url: maven.snapshot) {
+        authentication(userName: maven.name, password: maven.password)
+      }
+      repository(url: maven.repository) {
+        authentication(userName: maven.name, password: maven.password)
+      }
+      pom.project {
+        version architecture.version
+        artifactId architecture.artifactId
+        groupId architecture.groupId
+        packaging architecture.packaging
+        description architecture.description
+      }
+    }
+  }
+}
+
+artifacts {
+  archives file(architecture.artifacts)
+}

@@ -1,0 +1,52 @@
+ext {
+  android = [
+      compileVersion: 27,
+
+      minVersion: 16,
+      targetVersion: 22,
+  ]
+
+  depend = [
+      v7: 'com.android.support:appcompat-v7:26.1.0',
+      v4: 'com.android.support:support-v4:26.1.0',
+      recyclerview: 'com.android.support:recyclerview-v7:26.1.0',
+      design: 'com.android.support:design:26.1.0',
+
+      rxpermissions: 'com.tbruyelle.rxpermissions:rxpermissions:0.9.3@aar',
+      zxing: 'com.google.zxing:core:3.2.1',
+      qrcodecore: 'cn.bingoogolapple:bga-qrcodecore:1.1.5@aar',
+      qrzxing: 'cn.bingoogolapple:bga-zxing:1.1.5@aar',
+      banner: 'com.youth.banner:banner:1.4.5',
+      eventbus: 'org.greenrobot:eventbus:3.0.0',
+
+      glide: 'com.github.bumptech.glide:glide:4.7.1',
+      glide_transformations: 'jp.wasabeef:glide-transformations:2.0.2',
+      glide_gpuimage: 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1',
+      boxing: 'com.bilibili:boxing-impl:0.4.0',
+      picasso: 'com.squareup.picasso:picasso:2.5.2',
+      swipedelmenulayout: 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.5',
+      imageCompressed: 'com.zxy.android:tiny:0.0.1',
+
+      gson: 'com.google.code.gson:gson:2.7',
+      urlconnection: 'com.squareup.okhttp3:okhttp-urlconnection:3.2.0',
+      retrofit: 'com.squareup.retrofit2:retrofit:2.4.0',
+      rxjava: 'io.reactivex:rxandroid:1.2.1',
+      rxjava2: 'io.reactivex.rxjava2:rxjava:2.1.1',
+      rxandroid: 'io.reactivex:rxandroid:1.2.1',
+      rxandroid2: 'io.reactivex.rxjava2:rxandroid:2.0.2',
+      gsonconverter: 'com.squareup.retrofit2:converter-gson:2.1.0',
+      gsonconverter2: 'com.squareup.retrofit2:converter-gson:2.4.0',
+      rxjavaadapter: 'com.squareup.retrofit2:adapter-rxjava:2.1.0',
+      rxjavaadapter2: 'com.squareup.retrofit2:adapter-rxjava2:2.4.0',
+
+      ijkplayerjava: 'tv.danmaku.ijk.media:ijkplayer-java:0.8.4',
+      ijkplayerarmv7a: 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4',
+      smallvideorecord: 'com.mabeijianxi:small-video-record:1.2.2',
+
+      umeng_common: 'com.umeng.sdk:common:1.5.3',
+      umeng_utdid: 'com.umeng.sdk:utdid:1.1.5.3',
+      umeng_push: 'com.umeng.sdk:push:4.2.0@aar',
+      umeng_push_xiaomi: 'com.umeng.sdk:push-xiaomi:1.0.0@aar',
+      umeng_push_huawei: 'com.umeng.sdk:push-huawei:1.0.0@aar',
+  ]
+}
