@@ -18,7 +18,7 @@ ext {
   ]
 
   config = [
-      version: '0.0.1',
+      version: '0.1.1',
       artifactId: 'config',
       packaging: 'aar',
       description: 'config library',
@@ -54,7 +54,7 @@ ext {
   ]
 
   request2 = [
-      version: '0.0.1',
+      version: '0.1.1',
       artifactId: 'request2',
       packaging: 'aar',
       description: 'request library',
@@ -63,7 +63,7 @@ ext {
   ]
 
   request = [
-      version: '0.0.1',
+      version: '0.1.1',
       artifactId: 'request',
       packaging: 'aar',
       description: 'request library',
