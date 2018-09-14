@@ -1,3 +1,7 @@
-include ':common', ':architecture', ':request', ':logger'
+include ':common'
 include ':config'
 include ':request2'
+include ':architecture'
+include ':request'
+include ':logger'
+include ':libjpeg'

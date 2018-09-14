@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+android {
+  compileSdkVersion 27
+  defaultConfig {
+    applicationId "com.codingapi.android.library.image"
+    minSdkVersion 16
+    //noinspection OldTargetApi
+    targetSdkVersion 24
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    externalNativeBuild {
+      cmake {
+        //                cppFlags "-frtti -fexceptions"
+        //                arguments "-DANDROID_TOOLCHAIN=clang"
+        abiFilters 'armeabi-v7a', 'armeabi'
+      }
+    }
+
+    ndk {
+      //打包进APK的ABI类型
+      abiFilters 'armeabi-v7a'
+    }
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+  externalNativeBuild {
+    cmake {
+      path "CMakeLists.txt"
+    }
+  }
+}
+
+dependencies {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation 'com.android.support:appcompat-v7:27.1.1'
+}

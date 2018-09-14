@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.concurrent.TimeUnit;
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -36,32 +35,27 @@ public class LoggerInterceptor implements Interceptor {
     // 处理请求体
     private Request doRequest(Request request) {
         RequestBody requestBody = request.body();
-        HttpUrl url = request.url();
-        HttpUrl.Builder newUrl = url.newBuilder();
-        Buffer buffer = new Buffer();
+        String parameter = "";
         try {
-            if (requestBody != null) {
+            if (requestBody != null && requestBody.contentLength() != 0) {
+                Buffer buffer = new Buffer();
                 requestBody.writeTo(buffer);
+                parameter = buffer.readString(UTF8);
+                buffer.flush();
+                buffer.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String parameter = buffer.readString(UTF8);
-        buffer.flush();
-        buffer.close();
         String token = ConfigurationImpl.get().getToken();
-        if (!TextUtils.isEmpty(token)) {
-            newUrl.addQueryParameter("token", token);
-        }
         Logger.i(TAG, "REQUEST\n" +
             "param ->[T_T]     ：" + (TextUtils.isEmpty(parameter) ? "空空如也" : parameter) + "\n" +
-            "url   ->[Q_Q]     ：" + url + "\n" +
-            "host  ->[@_@]     ：" + url.host() + "\n" +
+            "url   ->[Q_Q]     ：" + request.url() + "\n" +
+            "host  ->[@_@]     ：" + request.url().host() + "\n" +
             "token:->[*_*]     ：" + token + "\n" +
             "method->[^_^]     ：" + request.method()
         );
-        Request.Builder requestBuilder =
-            request.newBuilder().method(request.method(), request.body()).url(newUrl.build());
+        Request.Builder requestBuilder = request.newBuilder().addHeader("Authorization", token);
         return requestBuilder.build();
     }
 
@@ -93,11 +87,10 @@ public class LoggerInterceptor implements Interceptor {
                 return response;
             }
             if (charset != null) {
-                Logger.d(TAG,
-                    "RESPONSE\n"
-                        + "url:" + response.request().url() + "\n"
-                        + "timer:" + tookMs + "ms\n"
-                        + responseBuffer.clone().readString(charset)
+                Logger.d(TAG, "RESPONSE\n"
+                    + "url:" + response.request().url() + "\n"
+                    + "timer:" + tookMs + "ms\n"
+                    + responseBuffer.clone().readString(charset)
                 );
             }
             return response;

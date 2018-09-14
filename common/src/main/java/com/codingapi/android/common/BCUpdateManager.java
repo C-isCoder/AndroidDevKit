@@ -15,7 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
-import com.baichang.android.config.ConfigurationImpl;
+import com.codingapi.android.config.Configuration;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -52,7 +52,6 @@ public class BCUpdateManager {
 
     private static final int DOWN_OVER = 2;
 
-
     private static String message = "";
 
     private int progress;
@@ -73,7 +72,6 @@ public class BCUpdateManager {
                     break;
             }
         }
-
     };
 
     public BCUpdateManager(Context context, String apkUrl, String updateMsg) {
@@ -99,7 +97,7 @@ public class BCUpdateManager {
 
     //外部接口让主Activity调用
     public void checkUpdateInfo() {
-        showNoticeDialog(ConfigurationImpl.get().getAppBarColor());
+        showNoticeDialog(Configuration.get().getAppBarColor());
     }
 
     @SuppressLint("NewApi")
@@ -120,7 +118,7 @@ public class BCUpdateManager {
             public void onClick(DialogInterface dialog, int which) {
                 //强制升级
                 if (mCoerce) {
-                    AppManager.getAppManager().AppExit(mContext);
+                    AppManager.getAppManager().AppExit();
                 } else {
                     dialog.dismiss();
                 }
@@ -135,12 +133,13 @@ public class BCUpdateManager {
      * 设置Dialog的颜色
      *
      * @param dialog Dialog
-     * @param color  颜色
+     * @param color 颜色
      */
     private static void setDialogTitleColor(Dialog dialog, int color) {
         try {
             Context context = dialog.getContext();
-            int dividerId = context.getResources().getIdentifier("android:id/titleDivider", null, null);
+            int dividerId =
+                context.getResources().getIdentifier("android:id/titleDivider", null, null);
             View divider = dialog.findViewById(dividerId);
             divider.setBackgroundColor(context.getResources().getColor(color));
 
@@ -217,7 +216,6 @@ public class BCUpdateManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
     };
 
@@ -240,9 +238,8 @@ public class BCUpdateManager {
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(apkFile),
-                "application/vnd.android.package-archive");
+            "application/vnd.android.package-archive");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
-
     }
 }
