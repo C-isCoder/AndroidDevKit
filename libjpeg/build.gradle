@@ -14,7 +14,7 @@ android {
       cmake {
         //                cppFlags "-frtti -fexceptions"
         //                arguments "-DANDROID_TOOLCHAIN=clang"
-        abiFilters 'armeabi-v7a', 'armeabi'
+        abiFilters 'armeabi-v7a'
       }
     }
 
