@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.blueberry.compress.R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         checkPermission();
-        findViewById(com.blueberry.compress.R.id.btn_compress).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_compress).setOnClickListener(new View.OnClickListener() {
             @SuppressLint("StaticFieldLeak") @Override
             public void onClick(final View v) {
                 v.setClickable(false);

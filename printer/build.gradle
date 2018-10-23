@@ -1,7 +1,7 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.android.library' // 仓库
 apply from: '../maven-config.gradle'
 apply from: '../depend-config.gradle'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
   compileSdkVersion android.compileVersion
@@ -19,8 +19,10 @@ android {
 
 dependencies {
   implementation fileTree(include: ['*.jar'], dir: 'libs')
-  compileOnly project(':config')
+  implementation depend.v7
+  implementation files('libs/gprintersdkv1.jar')
 }
+
 uploadArchives {
   configuration = configurations.archives
   repositories {
@@ -32,16 +34,16 @@ uploadArchives {
         authentication(userName: maven.name, password: maven.password)
       }
       pom.project {
-        version logger_util.version
-        artifactId logger_util.artifactId
-        groupId logger_util.groupId
-        packaging logger_util.packaging
-        description logger_util.description
+        version printer.version
+        artifactId printer.artifactId
+        groupId printer.groupId
+        packaging printer.packaging
+        description printer.description
       }
     }
   }
 }
 
 artifacts {
-  archives file(logger_util.artifacts)
+  archives file(printer.artifacts)
 }

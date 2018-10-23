@@ -109,7 +109,7 @@ ext {
 
   printer = [
       version: '0.0.1',
-      artifactId: 'printerKit',
+      artifactId: 'printer',
       packaging: 'aar',
       description: 'GP Printer Kit',
       groupId: maven.library,
