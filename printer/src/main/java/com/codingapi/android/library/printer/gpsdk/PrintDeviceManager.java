@@ -1,6 +1,9 @@
 package com.codingapi.android.library.printer.gpsdk;
 
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,23 +11,23 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
-import com.gprinter.io.BluetoothPort;
+import com.codingapi.android.library.printer.R;
 import com.gprinter.io.PortManager;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.ref.WeakReference;
+import java.util.UUID;
 import java.util.Vector;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Administrator
- *
- * @author 猿史森林
- * Time 2017/8/2
+ * Created by iCong
  */
-public class DeviceConnFactoryManager {
-    private static final String TAG = DeviceConnFactoryManager.class.getSimpleName();
+public class PrintDeviceManager {
+    private static final String TAG = PrintDeviceManager.class.getSimpleName();
     /**
      * ESC查询打印机实时状态指令
      */
@@ -64,7 +67,7 @@ public class DeviceConnFactoryManager {
      * TSC指令查询打印机实时状态 打印机出错状态
      */
     private static final int TSC_STATE_ERR_OCCURS = 0x80;
-    private static DeviceConnFactoryManager sDeviceManager;
+    private static PrintDeviceManager sDeviceManager;
     private static final int READ_DATA = 10000;
     private static final String READ_DATA_CNT = "read_data_cnt";
     private static final String READ_BUFFER_ARRAY = "read_buffer_array";
@@ -83,17 +86,29 @@ public class DeviceConnFactoryManager {
     private PortManager mPort;
     private Context mContext;
     private boolean isOpenPort;
+    // 蓝牙适配器
+    private BluetoothAdapter mAdapter;
+    // 蓝牙 io
+    private BluetoothSocket mSocket;
+    // 蓝牙设备
+    private BluetoothDevice mDevice;
+    // 输入流
+    private InputStream mInputStream;
+    // 读取流
+    private OutputStream mOutputStream;
+    // UUID
+    private static final UUID sUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    private DeviceConnFactoryManager(Context context) {
+    private PrintDeviceManager(Context context) {
         this.mContext = context;
     }
 
-    public static DeviceConnFactoryManager getInstance(Context context) {
+    public static PrintDeviceManager getInstance(Context context) {
         if (sDeviceManager == null) {
-            synchronized (DeviceConnFactoryManager.class) {
+            synchronized (PrintDeviceManager.class) {
                 if (sDeviceManager == null) {
                     WeakReference<Context> weakReference = new WeakReference<>(context);
-                    sDeviceManager = new DeviceConnFactoryManager(weakReference.get());
+                    sDeviceManager = new PrintDeviceManager(weakReference.get());
                 }
             }
         }
@@ -105,14 +120,43 @@ public class DeviceConnFactoryManager {
      */
     public void connection(String address) {
         sendStateBroadcast(CONN_STATE_CONNECTING);
-        sDeviceManager.isOpenPort = false;
-        mPort = new BluetoothPort(address);
-        isOpenPort = sDeviceManager.mPort.openPort();
-        //端口打开成功后，检查连接打印机所使用的打印机指令ESC、TSC
-        if (isOpenPort) {
-            queryCommand();
+        Log.i(TAG, "开始连接接打印机...");
+        mAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mAdapter == null) {
+            showMessage(R.string.print_not_bluetooth);
+            Log.e(TAG, "打印机连接失败，设备不支持蓝牙");
+        } else if (!mAdapter.isEnabled()) {
+            showMessage("请打开蓝牙");
+            Log.e(TAG, "打印机连接失败，未开启蓝牙");
         } else {
-            sendStateBroadcast(CONN_STATE_FAILED);
+            mDevice = mAdapter.getRemoteDevice(address);
+            try {
+                mSocket = mDevice.createRfcommSocketToServiceRecord(sUUID);
+                mAdapter.cancelDiscovery();
+                mSocket.connect();
+                mInputStream = mSocket.getInputStream();
+                mOutputStream = mSocket.getOutputStream();
+                Log.i(TAG, "打印机连接成功...");
+                sendCommand("PRINT 10\n");
+            } catch (IOException ioe) {
+                Log.e(TAG, "打印机连接失败", ioe);
+                try {
+                    mSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ioe.printStackTrace();
+            }
+        }
+    }
+
+    private void sendCommand(String message) {
+        byte[] bytes = message.getBytes();
+        try {
+            mOutputStream.write(bytes);
+        } catch (IOException e) {
+            Log.e(TAG, "向打印机发送是指令失败", e);
+            e.printStackTrace();
         }
     }
 
@@ -188,7 +232,7 @@ public class DeviceConnFactoryManager {
                 sendDataImmediately(data);
                 //开启计时器，隔2000毫秒没有没返回值时发送TSC查询打印机状态指令
                 final ThreadFactoryBuilder thread =
-                    new ThreadFactoryBuilder(DeviceConnFactoryManager.class.getSimpleName());
+                    new ThreadFactoryBuilder(PrintDeviceManager.class.getSimpleName());
                 final ScheduledExecutorService scheduled =
                     new ScheduledThreadPoolExecutor(1, thread);
                 scheduled.schedule(thread.newThread(new Runnable() {
@@ -346,5 +390,13 @@ public class DeviceConnFactoryManager {
             mContext = null;
         }
         mHandler = null;
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showMessage(int msgRes) {
+        Toast.makeText(mContext, msgRes, Toast.LENGTH_SHORT).show();
     }
 }

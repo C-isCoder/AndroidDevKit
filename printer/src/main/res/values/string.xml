@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="print_not_bluetooth">该设备不支持蓝牙</string>
+</resources>

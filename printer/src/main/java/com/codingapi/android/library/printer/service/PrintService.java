@@ -3,6 +3,7 @@ package com.codingapi.android.library.printer.service;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +13,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
-import com.codingapi.android.library.printer.gpsdk.DeviceConnFactoryManager;
+import com.codingapi.android.library.printer.gpsdk.PrintDeviceManager;
 import com.codingapi.android.library.printer.gpsdk.PrinterCommand;
 import com.codingapi.android.library.printer.gpsdk.ThreadFactoryBuilder;
 import com.codingapi.android.library.printer.gpsdk.ThreadPool;
@@ -34,9 +35,12 @@ public class PrintService extends Service {
     public static final String PRINT_DATA = "print_data";
     // 打印模式
     public static final String PRINT_MODEL = "print_model";
+    // 蓝牙地址
     private String mBluetoothAddress = "";
     // 蓝牙适配器
     private BluetoothAdapter mBluetoothAdapter;
+    // 蓝牙 io
+    private BluetoothSocket mBluetoothSocket;
     // 线程池
     private ThreadFactoryBuilder mThreadFactoryBuilder;
     /**
@@ -52,7 +56,7 @@ public class PrintService extends Service {
     // 打印模式 默认正常
     private MODEL model = MODEL.NORMAL;
     // 打印机管理
-    private DeviceConnFactoryManager mDeviceManager;
+    private PrintDeviceManager mDeviceManager;
 
     public enum MODEL implements Serializable {
         NORMAL, TEST
@@ -65,9 +69,9 @@ public class PrintService extends Service {
     @Override public void onCreate() {
         super.onCreate();
         mThreadFactoryBuilder = new ThreadFactoryBuilder(PrintService.class.getSimpleName());
-        IntentFilter filter = new IntentFilter(DeviceConnFactoryManager.ACTION_CONN_STATE);
+        IntentFilter filter = new IntentFilter(PrintDeviceManager.ACTION_CONN_STATE);
         registerReceiver(mDeviceStateReceiver, filter);
-        mDeviceManager = DeviceConnFactoryManager.getInstance(this);
+        mDeviceManager = PrintDeviceManager.getInstance(this);
     }
 
     @Override public void onDestroy() {
@@ -139,23 +143,23 @@ public class PrintService extends Service {
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
                     new Handler().obtainMessage(CONN_STATE_DISCONNECTION).sendToTarget();
                     break;
-                case DeviceConnFactoryManager.ACTION_CONN_STATE:
-                    int state = intent.getIntExtra(DeviceConnFactoryManager.STATE, -1);
+                case PrintDeviceManager.ACTION_CONN_STATE:
+                    int state = intent.getIntExtra(PrintDeviceManager.STATE, -1);
                     switch (state) {
-                        case DeviceConnFactoryManager.CONN_STATE_DISCONNECT:
+                        case PrintDeviceManager.CONN_STATE_DISCONNECT:
                             Log.i(TAG, "连接状态：未连接");
                             Toast.makeText(getContext(), "打印机未连接，请检查打印机是否开启", Toast.LENGTH_LONG)
                                 .show();
                             break;
-                        case DeviceConnFactoryManager.CONN_STATE_CONNECTING:
+                        case PrintDeviceManager.CONN_STATE_CONNECTING:
                             Log.i(TAG, "连接中...");
                             break;
-                        case DeviceConnFactoryManager.CONN_STATE_CONNECTED:
+                        case PrintDeviceManager.CONN_STATE_CONNECTED:
                             Log.i(TAG, "连接状态：已连接");
                             // 连接成功，开始打印
                             print();
                             break;
-                        case DeviceConnFactoryManager.CONN_STATE_FAILED:
+                        case PrintDeviceManager.CONN_STATE_FAILED:
                             Log.e(TAG, "连接失败！");
                             Toast.makeText(getContext(), "打印机连接失败", Toast.LENGTH_LONG).show();
                             break;
