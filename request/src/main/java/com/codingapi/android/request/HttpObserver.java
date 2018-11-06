@@ -1,6 +1,6 @@
 package com.codingapi.android.request;
 
-import com.codingapi.android.library.logger.Logger;
+import com.codingapi.android.library.logger.CodingAPILogger;
 import rx.Subscriber;
 
 /**
@@ -26,7 +26,7 @@ public class HttpObserver<T> extends Subscriber<T> {
 
     @Override public void onError(Throwable e) {
         mResultListener.error(e);
-        Logger.e(TAG, e.getMessage(), e);
+        CodingAPILogger.e(TAG, e.getMessage(), e);
     }
 
     @Override public void onStart() {

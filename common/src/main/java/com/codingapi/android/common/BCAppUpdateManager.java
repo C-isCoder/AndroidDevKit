@@ -13,7 +13,7 @@ import android.os.Build;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
-import com.codingapi.android.library.logger.Logger;
+import com.codingapi.android.library.logger.CodingAPILogger;
 import java.io.File;
 
 /**
@@ -144,7 +144,7 @@ public class BCAppUpdateManager {
                 mContext.startActivity(install);
             }
         } catch (Exception e) {
-            Logger.e(TAG, "update error: " + e.toString());
+            CodingAPILogger.e(TAG, "update error: " + e.toString());
         } finally {
             unregisterReceiver();
         }

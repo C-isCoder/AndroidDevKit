@@ -2,7 +2,7 @@ package com.codingapi.android.request;
 
 import android.text.TextUtils;
 import com.baichang.android.config.ConfigurationImpl;
-import com.codingapi.android.library.logger.Logger;
+import com.codingapi.android.library.logger.CodingAPILogger;
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -48,7 +48,7 @@ public class LoggerInterceptor implements Interceptor {
             e.printStackTrace();
         }
         String token = ConfigurationImpl.get().getToken();
-        Logger.i(TAG, "REQUEST\n" +
+        CodingAPILogger.i(TAG, "REQUEST\n" +
             "param ->[T_T]     ：" + (TextUtils.isEmpty(parameter) ? "空空如也" : parameter) + "\n" +
             "url   ->[Q_Q]     ：" + request.url() + "\n" +
             "host  ->[@_@]     ：" + request.url().host() + "\n" +
@@ -87,7 +87,7 @@ public class LoggerInterceptor implements Interceptor {
                 return response;
             }
             if (charset != null) {
-                Logger.d(TAG, "RESPONSE\n"
+                CodingAPILogger.d(TAG, "RESPONSE\n"
                     + "url:" + response.request().url() + "\n"
                     + "timer:" + tookMs + "ms\n"
                     + responseBuffer.clone().readString(charset)

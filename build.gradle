@@ -6,7 +6,7 @@ buildscript {
     }
     classpath 'com.android.tools.build:gradle:3.2.1'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.2'
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
   }
   repositories {
     google()
@@ -19,7 +19,6 @@ allprojects {
     mavenCentral()
     google()
     maven { url "https://jitpack.io" }
-    maven { url "http://svn.weiidu.com:8081/nexus/content/repositories/android/" }
   }
 }
 

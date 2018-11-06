@@ -6,7 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
-import com.codingapi.android.library.logger.Logger;
+import com.codingapi.android.library.logger.CodingAPILogger;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -76,14 +76,14 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
-            Logger.e(TAG, "error : ", e);
+            CodingAPILogger.e(TAG, "error : ", e);
         }
         //不加上不打印
         boolean result = handleException(ex);
         if (result) {
-            Logger.w(TAG, "handler crash success");
+            CodingAPILogger.w(TAG, "handler crash success");
         } else {
-            Logger.w(TAG, "handler crash failed");
+            CodingAPILogger.w(TAG, "handler crash failed");
         }
         //重新启动程序
         PackageManager manager = mContext.getPackageManager();
@@ -108,7 +108,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         collectDeviceInfo();
         //保存日志文件
         final String fileName = saveCrashInfo2File(ex);
-        Logger.w(TAG, String.format("crash file name is %s", fileName));
+        CodingAPILogger.w(TAG, String.format("crash file name is %s", fileName));
         ex.printStackTrace();
         return true;
     }
@@ -128,16 +128,16 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 infoMap.put("versionCode", versionCode);
             }
         } catch (PackageManager.NameNotFoundException e) {
-            Logger.e(TAG, "an error occured when collect package info", e);
+            CodingAPILogger.e(TAG, "an error occured when collect package info", e);
         }
         Field[] fields = Build.class.getDeclaredFields();
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
                 infoMap.put(field.getName(), field.get(null).toString());
-                Logger.d(TAG, field.getName() + " : " + field.get(null));
+                CodingAPILogger.d(TAG, field.getName() + " : " + field.get(null));
             } catch (Exception e) {
-                Logger.e(TAG, "an error occured when collect crash info", e);
+                CodingAPILogger.e(TAG, "an error occured when collect crash info", e);
             }
         }
     }
@@ -179,16 +179,16 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             final String fileName = "Crash_" + time + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 final String crashDir = getCrashLogFolder().getAbsolutePath();
-                Logger.d(TAG, String.format("crash log dir is %s", crashDir));
+                CodingAPILogger.d(TAG, String.format("crash log dir is %s", crashDir));
                 final File file = new File(getCrashLogFolder(), fileName);
-                Logger.d(TAG, String.format("crash log file is %s", file.getAbsolutePath()));
+                CodingAPILogger.d(TAG, String.format("crash log file is %s", file.getAbsolutePath()));
                 FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
                 fos.write(sb.toString().getBytes());
                 fos.close();
             }
             return fileName;
         } catch (Exception e) {
-            Logger.e(TAG, "an error occur while writing file...", e);
+            CodingAPILogger.e(TAG, "an error occur while writing file...", e);
         }
         return null;
     }

@@ -111,7 +111,7 @@ ext {
       version: '0.0.1',
       artifactId: 'printer',
       packaging: 'aar',
-      description: 'GP Printer Kit',
+      description: 'Android Bluetooth Printer Kit',
       groupId: maven.library,
       artifacts: 'printer.aar'
   ]

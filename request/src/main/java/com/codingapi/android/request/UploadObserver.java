@@ -3,7 +3,7 @@ package com.codingapi.android.request;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.Toast;
-import com.codingapi.android.library.logger.Logger;
+import com.codingapi.android.library.logger.CodingAPILogger;
 import java.lang.ref.WeakReference;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -63,7 +63,7 @@ public abstract class UploadObserver<T> extends Subscriber<T> {
             Toast.makeText(mContext, HttpException.NET_CONNECT_ERROR, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
-            Logger.e(TAG, e.getMessage(), e);
+            CodingAPILogger.e(TAG, e.getMessage(), e);
         }
     }
 

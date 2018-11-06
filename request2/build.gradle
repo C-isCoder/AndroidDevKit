@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
+apply plugin: 'com.github.dcendents.android-maven'
 apply from: '../maven-config.gradle'
 apply from: '../depend-config.gradle'
 
@@ -18,13 +18,12 @@ android {
   }
   dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compileOnly depend.retrofit
-    compileOnly depend.urlconnection
-    compileOnly depend.gsonconverter2
-    compileOnly depend.rxjavaadapter2
-    compileOnly depend.rxandroid2
-    //    compileOnly project(':config')
-    compileOnly 'com.baichang.android.library:config:1.0.2'
+    implementation depend.retrofit
+    implementation depend.urlconnection
+    implementation depend.gsonconverter2
+    implementation depend.rxjavaadapter2
+    implementation depend.rxandroid2
+    compileOnly project(':config')
     compileOnly project(':logger')
   }
 }

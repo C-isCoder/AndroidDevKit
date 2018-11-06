@@ -20,7 +20,7 @@ android {
 
 dependencies {
   implementation fileTree(include: ['*.jar'], dir: 'libs')
-  compileOnly depend.v7
+  implementation depend.v7
   compileOnly project(':config')
   compileOnly project(':logger')
 }

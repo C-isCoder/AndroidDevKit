@@ -7,7 +7,7 @@
 
   <application>
     <service
-        android:name=".service.PrintService"
+        android:name=".service.PrinterService"
         android:exported="false"/>
   </application>
 

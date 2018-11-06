@@ -8,6 +8,7 @@ android {
 
   defaultConfig {
     minSdkVersion android.minVersion
+    targetSdkVersion android.targetVersion
   }
   buildTypes {
     release {
@@ -20,7 +21,6 @@ android {
 dependencies {
   implementation fileTree(include: ['*.jar'], dir: 'libs')
   implementation depend.v7
-  implementation files('libs/gprintersdkv1.jar')
 }
 
 uploadArchives {

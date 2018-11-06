@@ -19,7 +19,6 @@ android {
 
 dependencies {
   implementation fileTree(include: ['*.jar'], dir: 'libs')
-  compileOnly project(':config')
 }
 uploadArchives {
   configuration = configurations.archives

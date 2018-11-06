@@ -1,4 +1,4 @@
-package com.codingapi.android.library.printer.gpsdk;
+package com.codingapi.android.library.printer.threads;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -7,11 +7,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Administrator
- *
- * @author 猿史森林
- * Date: 2017/11/2
- * Class description:
+ * Created by iCong
  */
 public class ThreadPool {
 
@@ -39,18 +35,16 @@ public class ThreadPool {
     /**
      * 线程池缓存队列
      */
-    private BlockingQueue<Runnable> mWorkQueue = new ArrayBlockingQueue<>(CORE_POOL_SIZE);
-
-    private ThreadFactory threadFactory =
-        new ThreadFactoryBuilder(ThreadPool.class.getSimpleName());
+    private static BlockingQueue<Runnable> mWorkQueue = new ArrayBlockingQueue<>(CORE_POOL_SIZE);
 
     private ThreadPool() {
+        ThreadFactory threadFactory = new ThreadFactoryBuilder(ThreadPool.class.getSimpleName());
         threadPoolExecutor =
             new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_COUNTS, ALIVETIME, TimeUnit.SECONDS,
                 mWorkQueue, threadFactory);
     }
 
-    public static ThreadPool getInstantiation() {
+    public static ThreadPool getInstance() {
         if (threadPool == null) {
             threadPool = new ThreadPool();
         }
@@ -70,6 +64,10 @@ public class ThreadPool {
         if (threadPoolExecutor != null) {
             threadPoolExecutor.shutdown();
             threadPoolExecutor = null;
+        }
+        if (mWorkQueue != null) {
+            mWorkQueue.clear();
+            mWorkQueue = null;
         }
     }
 }

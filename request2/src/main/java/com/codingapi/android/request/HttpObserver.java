@@ -1,6 +1,6 @@
 package com.codingapi.android.request;
 
-import com.codingapi.android.library.logger.Logger;
+import com.codingapi.android.library.logger.CodingAPILogger;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -22,7 +22,7 @@ public class HttpObserver<T> extends DisposableObserver<T> {
 
     @Override public void onError(Throwable e) {
         mResultListener.error(e);
-        Logger.e(TAG, e.getMessage(), e);
+        CodingAPILogger.e(TAG, e.getMessage(), e);
     }
 
     @Override protected void onStart() {
