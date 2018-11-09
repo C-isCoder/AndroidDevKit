@@ -1,6 +1,6 @@
 package com.codingapi.android.request;
 
-import com.baichang.android.config.ConfigurationImpl;
+import com.codingapi.android.config.Configuration;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -25,7 +25,7 @@ class HttpsHelper {
     public static SSLSocketFactory getSSLContext() {
         try {
             InputStream certificates =
-                ConfigurationImpl.get().getAppContext().getAssets().open("mySSL.cer");
+                Configuration.get().getAppContext().getAssets().open("mySSL.cer");
             if (certificates == null) throw new NullPointerException(SSL_ERROR);
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());

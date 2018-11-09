@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.widget.Toast;
-import com.baichang.android.config.ConfigurationImpl;
+import com.codingapi.android.config.Configuration;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -63,7 +63,7 @@ public class DownloadTransform {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         try {
-            Context context = ConfigurationImpl.get().getAppContext();
+            Context context = Configuration.get().getAppContext();
             PackageManager packageManager = context.getPackageManager();
             ApplicationInfo applicationInfo =
                 packageManager.getApplicationInfo(context.getPackageName(), 0);
@@ -141,7 +141,7 @@ public class DownloadTransform {
 
     private static void setProgress() {
         if (sDialog == null) {
-            Context context = ConfigurationImpl.get().getAppContext();
+            Context context = Configuration.get().getAppContext();
             sDialog = new ProgressDialog(context, ProgressDialog.THEME_HOLO_LIGHT);
         }
         sDialog.setCanceledOnTouchOutside(false);
@@ -172,7 +172,7 @@ public class DownloadTransform {
         @Override public void onStart() {
             super.onStart();
             if (!NetWorkTool.isNetworkConnected()) {
-                Context context = ConfigurationImpl.get().getAppContext();
+                Context context = Configuration.get().getAppContext();
                 Toast.makeText(context, HttpException.NETWORK_ERROR, Toast.LENGTH_SHORT).show();
                 onCompleted();
             }
@@ -188,7 +188,7 @@ public class DownloadTransform {
             if (sDialog != null) {
                 sDialog.dismiss();
             }
-            Context context = ConfigurationImpl.get().getAppContext();
+            Context context = Configuration.get().getAppContext();
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 

@@ -3,7 +3,7 @@ package com.codingapi.android.request;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import com.baichang.android.config.ConfigurationImpl;
+import com.codingapi.android.config.Configuration;
 
 /**
  * Created by iCong.
@@ -12,7 +12,7 @@ import com.baichang.android.config.ConfigurationImpl;
 
 public class NetWorkTool {
     public static boolean isNetworkConnected() {
-        Context context = ConfigurationImpl.get().getAppContext();
+        Context context = Configuration.get().getAppContext();
         ConnectivityManager cm =
             (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null) {

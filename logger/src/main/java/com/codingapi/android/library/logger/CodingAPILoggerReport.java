@@ -2,6 +2,7 @@ package com.codingapi.android.library.logger;
 
 import android.text.TextUtils;
 import android.util.Log;
+import com.dianping.logan.SendLogRunnable;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,11 +17,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import com.dianping.logan.SendLogRunnable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 class CodingAPILoggerReport extends SendLogRunnable {
+
     private String mUploadUrl;
 
     CodingAPILoggerReport(String uploadUrl) {
@@ -44,21 +45,15 @@ class CodingAPILoggerReport extends SendLogRunnable {
         return map;
     }
 
-    /**
-     * 主动上报
-     */
     private boolean doSendFileByAction(File logFile) {
         boolean isSuccess = false;
         try {
-            FileInputStream fileStream = null;
-            try {
-                fileStream = new FileInputStream(logFile);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            FileInputStream fileStream = new FileInputStream(logFile);
             byte[] backData = doPostRequest(mUploadUrl, fileStream, getActionHeader());
             isSuccess = handleSendLogBackData(backData);
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return isSuccess;
@@ -151,6 +146,7 @@ class CodingAPILoggerReport extends SendLogRunnable {
     }
 
     public interface ReportListener {
+
         void onResult(boolean isSuccess);
     }
 }

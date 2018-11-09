@@ -1,7 +1,7 @@
 package com.codingapi.android.request;
 
 import android.text.TextUtils;
-import com.baichang.android.config.ConfigurationImpl;
+import com.codingapi.android.config.Configuration;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -90,7 +90,7 @@ public class ConverterFactory extends Converter.Factory {
                 if (port_state == REQUEST_SUCCESS) {
                     return mGson.fromJson(mGson.toJson(httpResponse.getData().getData()), mType);
                 } else if (port_state == TOKEN_ERROR) {
-                    ConfigurationImpl.get().refreshToken();
+                    Configuration.get().refreshToken();
                     throw new HttpException(httpResponse.getData().getMsg());
                 } else {
                     throw new HttpException(httpResponse.getData().getMsg());

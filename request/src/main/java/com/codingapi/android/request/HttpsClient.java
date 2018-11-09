@@ -1,6 +1,6 @@
 package com.codingapi.android.request;
 
-import com.baichang.android.config.ConfigurationImpl;
+import com.codingapi.android.config.Configuration;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HostnameVerifier;
@@ -19,13 +19,13 @@ public class HttpsClient {
     private static HttpsClient INSTANCE;
     private Retrofit retrofit;
     private Retrofit newUrlRetrofit;
-    private static String BaseUrl = ConfigurationImpl.get().getApiDefaultHost();
+    private static String BaseUrl = Configuration.get().getApiDefaultHost();
 
     private HttpsClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //cache目录
         File cacheFile =
-            new File(ConfigurationImpl.get().getAppContext().getCacheDir(), "netWorkCache");
+            new File(Configuration.get().getAppContext().getCacheDir(), "netWorkCache");
         builder.cache(new Cache(cacheFile, 1024 * 1024 * 50));//50MB
         //自定义请求拦截器
         builder.addInterceptor(new LoggerInterceptor());
@@ -55,7 +55,7 @@ public class HttpsClient {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //cache目录
         File cacheFile =
-            new File(ConfigurationImpl.get().getAppContext().getCacheDir(), "netWorkCache");
+            new File(Configuration.get().getAppContext().getCacheDir(), "netWorkCache");
         builder.cache(new Cache(cacheFile, 1024 * 1024 * 50));//50MB
         //自定义请求拦截器
         builder.addInterceptor(new LoggerInterceptor());

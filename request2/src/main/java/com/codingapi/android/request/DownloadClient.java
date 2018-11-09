@@ -1,6 +1,6 @@
 package com.codingapi.android.request;
 
-import com.baichang.android.config.ConfigurationImpl;
+import com.codingapi.android.config.Configuration;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -14,7 +14,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 public class DownloadClient {
     private static DownloadClient INSTANCE;
     private Retrofit retrofit;
-    private static String BaseUrl = ConfigurationImpl.get().getApiDownload();
+    private static String BaseUrl = Configuration.get().getApiDownload();
 
     private DownloadClient() {
 

@@ -1,6 +1,7 @@
 package com.codingapi.android.library.logger;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import com.dianping.logan.Logan;
 import com.dianping.logan.LoganConfig;
@@ -11,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class CodingAPILogger {
+
     private final static String TAG = CodingAPILogger.class.getSimpleName();
     private final static String PREFIX_DATE = "yyyy-MM-dd";
     private final static String AES_KEY = "codingapi1234567";
@@ -20,22 +22,41 @@ public class CodingAPILogger {
     private static boolean isDebug;
     private static CodingAPILoggerReport sCodingAPILoggerReport;
 
-    private CodingAPILogger() {
+    public enum TYPE {
+        /**
+         * 信息类别
+         */
+        INFO,
+        /**
+         * 调试类别
+         */
+        DEBUG,
+        /**
+         * 错误类别
+         */
+        ERROR,
+        /**
+         * 网络类别
+         */
+        NETWORK,
+        /**
+         * 业务逻辑
+         */
+        LOGIC
     }
 
-    public enum MODE {
-        INFO, DEBUG, ERROR, WARN
+    private CodingAPILogger() {
     }
 
     public static void init(Context context, String uploadUrl) {
         LoganConfig config = new LoganConfig.Builder()
-            .setCachePath(context.getFilesDir().getAbsolutePath())
-            .setPath(
-                context.getExternalFilesDir(null).getAbsolutePath() + File.separator + FILE_NAME
-            )
-            .setEncryptKey16(AES_KEY.getBytes())
-            .setEncryptIV16(AES_KEY.getBytes())
-            .build();
+          .setCachePath(context.getFilesDir().getAbsolutePath())
+          .setPath(
+            context.getExternalFilesDir(null).getAbsolutePath() + File.separator + FILE_NAME
+          )
+          .setEncryptKey16(AES_KEY.getBytes())
+          .setEncryptIV16(AES_KEY.getBytes())
+          .build();
         Logan.init(config);
         Logan.setOnLoganProtocolStatus(new OnLoganProtocolStatus() {
             @Override
@@ -98,7 +119,7 @@ public class CodingAPILogger {
         if (isDebug) {
             Log.e(tag, message);
         }
-        saveLog2File(MODE.ERROR, tag, message);
+        saveLog2File(TYPE.ERROR, tag, message);
     }
 
     // error
@@ -106,7 +127,7 @@ public class CodingAPILogger {
         if (isDebug) {
             Log.e(tag, message, e);
         }
-        saveLog2File(MODE.ERROR, tag, message + e.toString());
+        saveLog2File(TYPE.ERROR, tag, message + e.toString());
     }
 
     // error
@@ -114,7 +135,7 @@ public class CodingAPILogger {
         if (isDebug) {
             Log.e(TAG, message, e);
         }
-        saveLog2File(MODE.ERROR, TAG, message + e.toString());
+        saveLog2File(TYPE.ERROR, TAG, message + e.toString());
     }
 
     // error
@@ -122,45 +143,45 @@ public class CodingAPILogger {
         if (isDebug) {
             Log.e(TAG, message);
         }
-        saveLog2File(MODE.ERROR, TAG, message);
+        saveLog2File(TYPE.ERROR, TAG, message);
     }
 
     /**
      * 日志写入
      *
-     * @param mode 日志类别 INFO DEBUG ERROR WARN
+     * @param type 日志类别 INFO DEBUG ERROR WARN
      * @param tag 标签
      * @param message 日志消息
      */
-    public static void write(MODE mode, String tag, String message) {
+    public static void write(TYPE type, String tag, String message) {
         if (isDebug) {
             Log.w(tag, message);
         }
-        saveLog2File(mode, tag, message);
+        saveLog2File(type, tag, message);
     }
 
     /**
      * 日志写入
      *
-     * @param mode 日志类别 INFO DEBUG ERROR WARN
+     * @param type 日志类别 INFO DEBUG ERROR WARN
      * @param message 日志消息
      */
-    public static void write(MODE mode, String message) {
+    public static void write(TYPE type, String message) {
         if (isDebug) {
             Log.w(TAG, message);
         }
-        saveLog2File(mode, TAG, message);
+        saveLog2File(type, TAG, message);
     }
 
     /**
      * 日志写入缓存
      *
-     * @param mode 日志类别 INFO DEBUG ERROR WARN
+     * @param type 日志类别 INFO DEBUG ERROR WARN
      * @param tag 标签
      * @param message 日志消息
      */
-    private static void saveLog2File(MODE mode, String tag, String message) {
-        Logan.w(tag + " <-> " + message, mode.ordinal());
+    private static void saveLog2File(TYPE type, String tag, String message) {
+        Logan.w(tag + " <-> " + message, type.ordinal());
     }
 
     /**
@@ -175,28 +196,48 @@ public class CodingAPILogger {
     /**
      * 上报日志，默认当天
      */
-    public static void report() {
-        report(new String[] { sDateFormat.format(System.currentTimeMillis()) });
+    public static void upload() {
+        upload(new String[] { sDateFormat.format(System.currentTimeMillis()) });
+    }
+
+    /**
+     * 上报某一天日志
+     *
+     * @param date 日期，格式：“2018-11-08”
+     */
+    public static void upload(String date) {
+        if (TextUtils.isEmpty(date)) {
+            throw new NullPointerException("Date not null");
+        }
+        final String[] s = date.split("-");
+        if (s.length < 3 || s[0].length() != 4 || s[1].length() != 2 || s[2].length() != 2) {
+            throw new IllegalArgumentException("check date error , please check date is right. "
+              + "eg: 2018-11-08");
+        }
+        upload(new String[] { date });
     }
 
     /**
      * 上报所有日志
      */
-    public static void reportAll() {
+    public static void uploadAll() {
         final Map<String, Long> info = Logan.getAllFilesInfo();
         if (info == null) {
             Log.i(TAG, "未找到日志文件");
             return;
         }
-        report(info.keySet().toArray(new String[] {}));
+        upload(info.keySet().toArray(new String[] {}));
     }
 
     /**
      * 上报日志
      *
-     * @param dates 日期数组，格式：“2018-07-27”
+     * @param dates 日期数组，格式：“2018-11-08”
      */
-    public static void report(String[] dates) {
+    public static void upload(String[] dates) {
+        if (dates == null) {
+            throw new NullPointerException("dates not null");
+        }
         Logan.s(dates, sCodingAPILoggerReport);
     }
 }

@@ -1,154 +1,163 @@
 ext {
-  maven = [
-      name: 'admin',
-      password: 'bcadmin',
-      snapshot: 'http://svn.weiidu.com:8081/nexus/content/repositories/snapshots/',
-      repository: 'http://svn.weiidu.com:8081/nexus/content/repositories/android/',
-      library: 'com.codingapi.android.library',
-      module: 'com.codingapi.android.module'
-  ]
+    maven = [
+            name: 'admin',
+            password: 'bcadmin',
+            snapshot: 'http://svn.weiidu.com:8081/nexus/content/repositories/snapshots/',
+            repository: 'http://svn.weiidu.com:8081/nexus/content/repositories/android/',
+            library: 'com.codingapi.android.library',
+            module: 'com.codingapi.android.module'
+    ]
 
-  common = [
-      version: '0.0.1',
-      artifactId: 'common',
-      packaging: 'aar',
-      description: 'common library',
-      groupId: maven.library,
-      artifacts: 'common.aar'
-  ]
+    common = [
+            version: '0.0.1',
+            artifactId: 'common',
+            packaging: 'aar',
+            description: 'common library',
+            groupId: maven.library,
+            artifacts: 'common.aar'
+    ]
 
-  config = [
-      version: '0.1.1',
-      artifactId: 'config',
-      packaging: 'aar',
-      description: 'config library',
-      groupId: maven.library,
-      artifacts: 'config.aar'
-  ]
+    config = [
+            version: '0.1.1',
+            artifactId: 'config',
+            packaging: 'aar',
+            description: 'config library',
+            groupId: maven.library,
+            artifacts: 'config.aar'
+    ]
 
-  imageloader = [
-      version: '0.0.1',
-      artifactId: 'imageLoader',
-      packaging: 'aar',
-      description: 'imageLloader library',
-      groupId: maven.library,
-      artifacts: 'imageloader.aar'
-  ]
+    imageloader = [
+            version: '0.0.1',
+            artifactId: 'imageLoader',
+            packaging: 'aar',
+            description: 'imageLloader library',
+            groupId: maven.library,
+            artifacts: 'imageloader.aar'
+    ]
 
-  permission = [
-      version: '0.0.1',
-      artifactId: 'permission',
-      packaging: 'aar',
-      description: 'permission library',
-      groupId: maven.library,
-      artifacts: 'permission.aar'
-  ]
+    permission = [
+            version: '0.0.1',
+            artifactId: 'permission',
+            packaging: 'aar',
+            description: 'permission library',
+            groupId: maven.library,
+            artifacts: 'permission.aar'
+    ]
 
-  qrcode = [
-      version: '0.0.1',
-      artifactId: 'qrcode',
-      packaging: 'aar',
-      description: 'qrcode library',
-      groupId: maven.library,
-      artifacts: 'qrcode.aar'
-  ]
+    qrcode = [
+            version: '0.0.1',
+            artifactId: 'qrcode',
+            packaging: 'aar',
+            description: 'qrcode library',
+            groupId: maven.library,
+            artifacts: 'qrcode.aar'
+    ]
 
-  request2 = [
-      version: '0.1.1',
-      artifactId: 'request2',
-      packaging: 'aar',
-      description: 'request library',
-      groupId: maven.library,
-      artifacts: 'request2.aar'
-  ]
+    request2 = [
+            version: '0.1.1',
+            artifactId: 'request2',
+            packaging: 'aar',
+            description: 'request library',
+            groupId: maven.library,
+            artifacts: 'request2.aar'
+    ]
 
-  request = [
-      version: '0.1.1',
-      artifactId: 'request',
-      packaging: 'aar',
-      description: 'request library',
-      groupId: maven.library,
-      artifacts: 'request.aar'
-  ]
+    request = [
+            version: '0.1.1',
+            artifactId: 'request',
+            packaging: 'aar',
+            description: 'request library',
+            groupId: maven.library,
+            artifacts: 'request.aar'
+    ]
 
-  umShare = [
-      version: '0.0.1',
-      artifactId: 'umShare',
-      packaging: 'aar',
-      description: 'umShare library',
-      groupId: maven.library,
-      artifacts: 'umShare.aar'
-  ]
+    umShare = [
+            version: '0.0.1',
+            artifactId: 'umShare',
+            packaging: 'aar',
+            description: 'umShare library',
+            groupId: maven.library,
+            artifacts: 'umShare.aar'
+    ]
 
-  utils = [
-      version: '0.0.1',
-      artifactId: 'utils',
-      packaging: 'aar',
-      description: 'utils library',
-      groupId: maven.library,
-      artifacts: 'utils.aar'
-  ]
+    utils = [
+            version: '0.0.1',
+            artifactId: 'utils',
+            packaging: 'aar',
+            description: 'utils library',
+            groupId: maven.library,
+            artifacts: 'utils.aar'
+    ]
 
-  widget = [
-      version: '0.0.1',
-      artifactId: 'widget',
-      packaging: 'aar',
-      description: 'widget library',
-      groupId: maven.library,
-      artifacts: 'widget.aar'
-  ]
+    widget = [
+            version: '0.0.1',
+            artifactId: 'widget',
+            packaging: 'aar',
+            description: 'widget library',
+            groupId: maven.library,
+            artifacts: 'widget.aar'
+    ]
 
-  interaction = [
-      version: '0.0.1',
-      artifactId: 'interaction',
-      packaging: 'aar',
-      description: 'Interaction Model',
-      groupId: maven.module,
-      artifacts: 'interaction.aar'
-  ]
+    interaction = [
+            version: '0.0.1',
+            artifactId: 'interaction',
+            packaging: 'aar',
+            description: 'Interaction Model',
+            groupId: maven.module,
+            artifacts: 'interaction.aar'
+    ]
 
-  printer = [
-      version: '0.0.1',
-      artifactId: 'printer',
-      packaging: 'aar',
-      description: 'Android Bluetooth Printer Kit',
-      groupId: maven.library,
-      artifacts: 'printer.aar'
-  ]
+    printer = [
+            version: '0.0.1',
+            artifactId: 'printer',
+            packaging: 'aar',
+            description: 'Android Bluetooth Printer Kit',
+            groupId: maven.library,
+            artifacts: 'printer.aar'
+    ]
 
-  interaction_no_video = [
-      version: '0.0.1',
-      artifactId: 'interaction_no_video',
-      packaging: 'aar',
-      description: 'Interaction Model no small video',
-      groupId: maven.module,
-      artifacts: 'interaction_no_video.aar'
-  ]
+    interaction_no_video = [
+            version: '0.0.1',
+            artifactId: 'interaction_no_video',
+            packaging: 'aar',
+            description: 'Interaction Model no small video',
+            groupId: maven.module,
+            artifacts: 'interaction_no_video.aar'
+    ]
 
-  push = [
-      version: '0.0.1',
-      artifactId: 'push',
-      packaging: 'aar',
-      description: 'Push Sdk',
-      groupId: maven.library,
-      artifacts: 'push.aar'
-  ]
+    push = [
+            version: '0.0.1',
+            artifactId: 'push',
+            packaging: 'aar',
+            description: 'Push Sdk',
+            groupId: maven.library,
+            artifacts: 'push.aar'
+    ]
 
-  architecture = [
-      version: '0.0.1',
-      artifactId: 'architecture',
-      packaging: 'aar',
-      description: 'architecture Sdk',
-      groupId: maven.library,
-      artifacts: 'architecture.aar'
-  ]
+    architecture = [
+            version: '0.0.1',
+            artifactId: 'architecture',
+            packaging: 'aar',
+            description: 'architecture Sdk',
+            groupId: maven.library,
+            artifacts: 'architecture.aar'
+    ]
 
-  logger_util = [
-      version: '0.0.1',
-      artifactId: 'logger',
-      packaging: 'aar',
-      description: 'logger Sdk',
-      groupId: maven.library,
-      artifacts: 'logger.aar'
-  ]
+    logger_util = [
+            version: '0.0.1',
+            artifactId: 'logger',
+            packaging: 'aar',
+            description: 'logger sdk',
+            groupId: maven.library,
+            artifacts: 'logger.aar'
+    ]
+
+    image = [
+            version: '0.0.1',
+            artifactId: 'image',
+            packaging: 'aar',
+            description: 'image loader sdk',
+            groupId: maven.library,
+            artifacts: 'image.aar'
+    ]
 }
