@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-public abstract class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public abstract class BaseActivity extends FragmentActivity {
         return this;
     }
 
-    public void toastMessage(Object content) {
+    public void toast(Object content) {
         if (content instanceof String) {
             Toast.makeText(this, (CharSequence) content, Toast.LENGTH_SHORT).show();
         } else {

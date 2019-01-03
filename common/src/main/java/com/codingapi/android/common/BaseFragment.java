@@ -7,7 +7,7 @@ import android.widget.Toast;
 public class BaseFragment extends Fragment {
     public static final int RESULT_OK = -1;
 
-    public void toastMessage(Object content) {
+    public void toast(Object content) {
         if (content instanceof String) {
             Toast.makeText(getActivity(), (CharSequence) content, Toast.LENGTH_SHORT).show();
         } else {
